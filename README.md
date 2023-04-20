@@ -1,2 +1,2 @@
-# blog-SEO
-Proyecto django de un blog personal
+# myblog
+Proyecto Blog Personal Curso Django
