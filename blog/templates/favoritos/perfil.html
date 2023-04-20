@@ -1,0 +1,51 @@
+<!-- head para PC -->
+{% extends "favoritos/base_favoritos.html" %}
+{% load  static %}
+
+{% block content %}
+
+{% include "includes/header.html" %}
+
+<div class="grid-container">
+    <div class="grid-x grid-margin-x align-center" style="margin-top: 1em;">
+        <!-- bloque de datos de usuario -->
+        <div class="cell small-12 large-4">
+            <div class="callout">
+                <h5>{{user.full_name}}</h5>
+                <p>{{user.email}} - {{user.ocupation}} - {{user.date_birth}}</p>
+                <a class="button warning" style="margin-bottom: 0;" href="#">Editar Datos</a>
+                <a class="button alert"  href="{% url 'users_app:user-logout' %}">Salir</a>
+            </div>
+        </div>
+        <!-- FIN bloque de datos de usuario -->
+
+
+        <!-- bloque de articulos favoritos de usuario -->
+        <div class="cell large-8 grid-x grid-margin-x align-center">
+            {% for en in entradas_user %}
+              <div class="cell small-12">
+                <div class="card-favoritos">
+                    <img class="card-favoritos-img" src="{{en.entry.image.url}}">
+                    <div class="card-favoritos-body">
+                        <h3 class="card-favoritos-body-titulo">{{en.entry.title}}</h3>
+                        <p class="card-favoritos-body-text">{{en.entry.resume}}</p>
+                        <form class="card-favoritos-body-actions" method="post" action="{% url 'favoritos_app:del_favoritos' en.id %}">{% csrf_token %}
+                            <a class="button warning" href="{% url 'entrada_app:detail' en.entry.id %}">Ver</a>
+                            <button class="button alert" type="submit">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+              </div>
+
+            {% empty %}
+              <h2>No tienen ningún articulo favorito</h2>
+            {% endfor %}
+            
+            
+        </div>
+        <!-- FIN bloque de articulos favoritos de usuario -->
+    </div>
+</div>
+{% include "includes/footer.html" %}
+
+{% endblock content %}

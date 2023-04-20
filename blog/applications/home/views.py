@@ -3,16 +3,18 @@ from django.http import HttpResponseRedirect
 #
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy, reverse,resolve
+
 from django.views import View
 
 from django.views.generic import (
     TemplateView,
-    FormView
+    CreateView
 )
 
 from applications.entrada.models import Entry 
 from .models import Home, Suscribers
+from .forms import ContactForm
 
 
 class HomePageView(TemplateView):
@@ -39,6 +41,12 @@ class SuscriberCreateView(View):
         Suscribers.objects.create(email = request.POST['email'])
         return HttpResponseRedirect(reverse('home_app:index'))
         
-    
+class ContactCreateView(CreateView):
+    form_class = ContactForm
         
+    def get_success_url(self):
+        """ Se obtiene la url del template que en ese momento contiene al formulario y se
+        retorna como la 'success_url' """
+        container_url = self.request.META.get('HTTP_REFERER')       
+        return container_url
     
