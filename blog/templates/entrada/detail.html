@@ -27,7 +27,7 @@
             <div class="card" style="width: 100%;">
                 <img src="{{object.image.url}}">
                 <div class="card-section" style="width: 100%;">
-                  <form class="blog-action" method="post" action="{% url 'favoritos_app:add_favoritos' object.id %}">{% csrf_token %}
+                  <form class="blog-action" method="post" action="{% url 'favoritos_app:add_favoritos' object.slug %}">{% csrf_token %}
                     <button class="button alert" type="submit">Agregar a Favoritos</button>
                   </form>
                 </div>

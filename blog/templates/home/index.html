@@ -1,7 +1,10 @@
 <!-- head para PC -->
 {% extends "home/base_home.html" %}
 {% load  static %}
-
+{% block title %} {{ home.title }} {% endblock title %}
+{% block description %}
+<meta name="description" content="{{ home.description }}">
+{% endblock description %}
 {% block content %}
 
 {% include "includes/header.html" %}
@@ -14,7 +17,7 @@
             <div class="card" style="width: 100%;">
                 <img src="{{ portada.image.url }}">
                 <div class="card-section">
-                  <h4 title="{{ portada.title }}"><a href="{% url 'entrada_app:detail' portada.id %}">{{portada.title}}</a></h4>
+                  <h4 title="{{ portada.title }}"><a href="{% url 'entrada_app:detail' portada.slug %}">{{portada.title}}</a></h4>
                   <p>{{portada.resume | truncatechars:40}}</p>
                 </div>
             </div>
@@ -29,7 +32,7 @@
                 <div class="card" style="width: 100%;">
                     <img src="{{ entry.image.url }}" style="height: 150px;">
                     <div class="card-section">
-                      <h5 title="{{ entry.title }}" style="height: 60px;"><a href="{% url 'entrada_app:detail' entry.id %}">{{ entry.title | truncatechars:40}}</a></h5>
+                      <h5 title="{{ entry.title }}" style="height: 60px;"><a href="{% url 'entrada_app:detail' entry.slug %}">{{ entry.title | truncatechars:40}}</a></h5>
                     </div>
                 </div>
             </div>
@@ -80,7 +83,7 @@
                 <div class="card" style="width: 100%;">
                     <img src="{{ entry.image.url }}" style="height: 150px;">
                     <div class="card-section"  style="height: 150px;">
-                        <h4><a href="{% url 'entrada_app:detail' entry.id %}">{{ entry.title | truncatechars:40 }}</a></h4>
+                        <h4><a href="{% url 'entrada_app:detail' entry.slug %}">{{ entry.title | truncatechars:40 }}</a></h4>
                         <p>{{ entry.resume | truncatechars:80 }}</p>
                     </div>
                 </div>

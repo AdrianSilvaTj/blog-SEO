@@ -1,5 +1,8 @@
+from datetime import timedelta, datetime
+
 from django.conf import settings
 from django.db import models
+from django.template.defaultfilters import slugify
 
 from model_utils.models import TimeStampedModel
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -42,6 +45,7 @@ class Entry(TimeStampedModel):
     image = models.ImageField('Imagen', upload_to='Entry')
     portada = models.BooleanField(default=False)
     in_home = models.BooleanField(default=False)
+    # slug, campo para el posicionamiento SEO, debe llamarse asi
     slug = models.SlugField(editable=False, max_length=300)
     
     objects = EntryManager()
@@ -53,7 +57,19 @@ class Entry(TimeStampedModel):
     def __str__(self):
         return self.title
     
-    def save(self, *args, **kwargs):
+    def slug_gen(self):
+        """ crear una entrada unica para el slug field """
+        now = datetime.now()
+        total_time = timedelta(
+            hours=now.hour,
+            minutes=now.minute,
+            seconds=now.second
+        )
+        seconds = int(total_time.total_seconds())
+        slug_unique = '%s %s' % (self.title, str(seconds))
+        return slugify(slug_unique)
+        
+    def save(self, *args, **kwargs):       
         """ Al guardar una entrada como portada, la que estaba en potada anteriormente se desactiva """
         if self.portada:
             # .__class__, se utiliza para hacer referencia a la clase del objeto, debe utilizarse aca
@@ -61,4 +77,7 @@ class Entry(TimeStampedModel):
             self.__class__.objects.filter(
                 portada=True
             ).exclude(id=self.id).update(portada=False)
+            
+        # slug_gen, genera una entrada de slug
+        self.slug = self.slug_gen()
         return super(Entry,self).save(*args, **kwargs)
