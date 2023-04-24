@@ -3,6 +3,7 @@ from datetime import timedelta, datetime
 from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.urls import reverse_lazy
 
 from model_utils.models import TimeStampedModel
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -81,3 +82,8 @@ class Entry(TimeStampedModel):
         # slug_gen, genera una entrada de slug
         self.slug = self.slug_gen()
         return super(Entry,self).save(*args, **kwargs)
+    
+    # Para el SEO
+    def get_absolute_url(self):
+        return reverse_lazy("entrada_app:detail", kwargs={"slug": self.slug})
+    

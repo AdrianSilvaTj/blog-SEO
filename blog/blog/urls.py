@@ -31,7 +31,12 @@ sitemaps = {
 }
 
 urlpatterns_sitemap = [
-    path('sitemap.xml', sitemap, {'sitemaps':sitemaps},name = 'django.contrib.sitemaps.views.sitemap'),
+    path(
+        "sitemap.xml/",
+        sitemap,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.sitemap",
+    ),
 ]
 
 urlpatterns = urlpatterns_main + urlpatterns_sitemap

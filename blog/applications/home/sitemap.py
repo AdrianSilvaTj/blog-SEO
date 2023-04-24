@@ -1,6 +1,8 @@
 """ Aca proporcionamos la estructura de nuestra web a buscacador para el SEO """
+from datetime import timedelta, datetime
 
 from django.contrib.sitemaps import Sitemap
+from django.urls import reverse_lazy
 
 from applications.entrada.models import Entry
 
@@ -9,7 +11,7 @@ class EntrySitemap(Sitemap):
     priority = 0.8 # prioridad del modelo en el sitio web 0 - 1
     protocol = 'https'
     
-    def item(self):
+    def items(self):
         """ De donde generara las url para el esquema """
         return Entry.objects.filter(public=True)
     
@@ -23,8 +25,15 @@ class Sitemap(Sitemap):
     def __init__(self, names):
         self.names = names
         
-    def item(self):
+    def items(self):
         return self.names
     
     def changefreq(self, obj):
         return 'weekly'
+    
+    def lastmod(self, obj):
+        return datetime.now()
+    
+    def location(self, obj):
+        return reverse_lazy(obj)
+    

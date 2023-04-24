@@ -1,6 +1,18 @@
 <!-- head para PC -->
 {% extends "entrada/base_entrada.html" %}
 {% load  static %}
+{% block title %} {{ object.title }} {% endblock title %}
+{% block description %}
+    <meta name="description" content="{{ object.resume }}">
+{% endblock description %}
+{% block tags %}
+    <meta name="keywords" content="
+    {% for t in object.tag.all %}
+        {{ t.name }},
+    {% endfor %}    
+    ">
+{% endblock tags %}
+
 
 {% block content %}
 
